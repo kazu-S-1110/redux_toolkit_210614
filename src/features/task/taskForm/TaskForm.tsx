@@ -1,6 +1,8 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import styles from './TaskForm.module.scss';
 import { useForm } from 'react-hook-form';
+import { createTask } from '../taskSlice';
 import TextField from '@material-ui/core/TextField';
 
 type Inputs = {
@@ -8,9 +10,10 @@ type Inputs = {
 };
 
 const TaskForm: React.FC = () => {
+  const dispatch = useDispatch();
   const { register, handleSubmit, reset } = useForm();
   const handleCreate = (data: Inputs) => {
-    console.log(data);
+    dispatch(createTask(data.taskTitle)); //taskSliceの関数を発火させるためにdispatchが必要
     reset(); //reset関数を発火することでテキストフィールドを空にできる。
   };
   return (
