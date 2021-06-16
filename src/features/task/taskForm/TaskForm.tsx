@@ -33,6 +33,16 @@ const TaskForm: React.FC<PropTypes> = ({ edit }) => {
           {...register('taskTitle')} //useformとの連携（バージョン７から書式違う）
           className={styles.text_field}
         />
+        {edit ? (
+          <div className={styles.button_wrapper}>
+            <button type="submit" className={styles.submit_button}>
+              Submit
+            </button>
+            <button type="button" className={styles.cancel_button}>
+              Cancel
+            </button>
+          </div>
+        ) : null}
       </form>
     </div>
   );
