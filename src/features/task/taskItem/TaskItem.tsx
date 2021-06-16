@@ -52,13 +52,10 @@ const TaskItem: React.FC<PropTypes> = ({ task }) => {
           <DeleteOutlineTwoToneIcon className={styles.icon} />
         </button>
       </div>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-      >
-        <div>モーダル！！！！！</div>
+      <Modal open={open} onClose={handleClose} className={styles.modal}>
+        <div className={styles.modal_content}>
+          <div className={styles.modal_title}>Edit</div>
+        </div>
       </Modal>
     </div>
   );
