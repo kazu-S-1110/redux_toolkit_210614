@@ -4,6 +4,7 @@ import EventNoteIcon from '@material-ui/icons/EventNote';
 import EditTwoToneIcon from '@material-ui/icons/EditTwoTone';
 import DeleteOutlineTwoToneIcon from '@material-ui/icons/DeleteOutlineTwoTone';
 import styles from './TaskItem.module.scss';
+import Modal from '@material-ui/core/Modal';
 
 interface PropTypes {
   task: {
@@ -14,6 +15,15 @@ interface PropTypes {
 }
 
 const TaskItem: React.FC<PropTypes> = ({ task }) => {
+  const [open, setOpen] = React.useState(false);
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   return (
     <div className={styles.root}>
       <div className={styles.title}>
@@ -30,12 +40,7 @@ const TaskItem: React.FC<PropTypes> = ({ task }) => {
           }}
           className={styles.checkbox}
         />
-        <button
-          className={styles.edit_button}
-          onClick={() => {
-            console.log(`edit ${task.id}`);
-          }}
-        >
+        <button className={styles.edit_button} onClick={handleOpen}>
           <EditTwoToneIcon className={styles.icon} />
         </button>
         <button
@@ -47,6 +52,14 @@ const TaskItem: React.FC<PropTypes> = ({ task }) => {
           <DeleteOutlineTwoToneIcon className={styles.icon} />
         </button>
       </div>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+        <div>モーダル！！！！！</div>
+      </Modal>
     </div>
   );
 };
