@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState, AppThunk } from '../../app/store';
-import { fetchCount } from './counterAPI';
 
 interface TaskState {
   idCount: number; //taskが何個あるかを管理
@@ -52,7 +51,8 @@ export const { createTask } = taskSlice.actions;
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of
 // in the slice file. For example: `useSelector((state: RootState) => state.counter.value)`
-export const selectCount = (state: RootState) => state.counter.value;
+export const selectTask = (state: RootState):TaskState["tasks"] => state.task.tasks;
+
 
 
 
