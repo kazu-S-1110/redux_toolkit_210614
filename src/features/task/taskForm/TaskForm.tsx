@@ -9,7 +9,11 @@ type Inputs = {
   taskTitle: string;
 };
 
-const TaskForm: React.FC = () => {
+type PropTypes = {
+  edit?: boolean;
+};
+
+const TaskForm: React.FC<PropTypes> = ({ edit }) => {
   const dispatch = useDispatch();
   const { register, handleSubmit, reset } = useForm();
   const handleCreate = (data: Inputs) => {
@@ -24,7 +28,7 @@ const TaskForm: React.FC = () => {
       >
         <TextField
           id="outlined-basic"
-          label="New task"
+          label={edit ? 'Edit Task' : 'New Task'}
           variant="outlined"
           {...register('taskTitle')} //useformとの連携（バージョン７から書式違う）
           className={styles.text_field}

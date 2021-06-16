@@ -5,6 +5,7 @@ import EditTwoToneIcon from '@material-ui/icons/EditTwoTone';
 import DeleteOutlineTwoToneIcon from '@material-ui/icons/DeleteOutlineTwoTone';
 import styles from './TaskItem.module.scss';
 import Modal from '@material-ui/core/Modal';
+import TaskForm from '../taskForm/TaskForm';
 
 interface PropTypes {
   task: {
@@ -55,6 +56,7 @@ const TaskItem: React.FC<PropTypes> = ({ task }) => {
       <Modal open={open} onClose={handleClose} className={styles.modal}>
         <div className={styles.modal_content}>
           <div className={styles.modal_title}>Edit</div>
+          <TaskForm edit />
         </div>
       </Modal>
     </div>
