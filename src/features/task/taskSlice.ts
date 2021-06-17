@@ -47,18 +47,23 @@ export const taskSlice = createSlice({
     //Modalを開くか閉じるかのフラグ管理
     handleModalOpen: (state, action) => {
       state.isModalOpen = action.payload
-    }
+    },
 
+    //どのtaskを選択しているか管理
+    selectTask: (state,action) => {
+      state.selectedTask = action.payload
+    },
   },
 });
 
-export const { createTask, handleModalOpen } = taskSlice.actions;
+export const { createTask,selectTask ,handleModalOpen } = taskSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of
 // in the slice file. For example: `useSelector((state: RootState) => state.counter.value)`
-export const selectTask = (state: RootState):TaskState["tasks"] => state.task.tasks;
+export const selectTasks= (state: RootState):TaskState["tasks"] => state.task.tasks;
 export const selectIsModalOpen = (state: RootState):TaskState["isModalOpen"] => state.task.isModalOpen;
+export const selectSelectedTask = (state: RootState):TaskState["selectedTask"] => state.task.selectedTask;
 
 
 

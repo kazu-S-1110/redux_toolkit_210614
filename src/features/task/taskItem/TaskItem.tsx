@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { handleModalOpen, selectIsModalOpen } from '../taskSlice';
+import { handleModalOpen, selectIsModalOpen, selectTask } from '../taskSlice';
 import Checkbox from '@material-ui/core/Checkbox';
 import EventNoteIcon from '@material-ui/icons/EventNote';
 import EditTwoToneIcon from '@material-ui/icons/EditTwoTone';
@@ -21,6 +21,7 @@ const TaskItem: React.FC<PropTypes> = ({ task }) => {
   const isModalOpen = useSelector(selectIsModalOpen);
   const dispatch = useDispatch();
   const handleOpen = () => {
+    dispatch(selectTask(task));
     dispatch(handleModalOpen(true));
   };
 

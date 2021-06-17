@@ -1,8 +1,8 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styles from './TaskForm.module.scss';
 import { useForm } from 'react-hook-form';
-import { createTask } from '../taskSlice';
+import { createTask, handleModalOpen, selectSelectedTask } from '../taskSlice';
 import TextField from '@material-ui/core/TextField';
 
 type Inputs = {
@@ -14,6 +14,7 @@ type PropTypes = {
 };
 
 const TaskForm: React.FC<PropTypes> = ({ edit }) => {
+  const selectedTask = useSelector(selectSelectedTask);
   const dispatch = useDispatch();
   const { register, handleSubmit, reset } = useForm();
   const handleCreate = (data: Inputs) => {
@@ -33,7 +34,7 @@ const TaskForm: React.FC<PropTypes> = ({ edit }) => {
         <TextField
           id="outlined-basic"
           label={edit ? 'Edit Task' : 'New Task'}
-          defaultValue={edit ? 'defaultValue' : ''}
+          defaultValue={edit ? selectedTask.title : ''}
           variant="outlined"
           {...register('taskTitle')} //useformとの連携（バージョン７から書式違う）
           className={styles.text_field}
@@ -43,7 +44,13 @@ const TaskForm: React.FC<PropTypes> = ({ edit }) => {
             <button type="submit" className={styles.submit_button}>
               Submit
             </button>
-            <button type="button" className={styles.cancel_button}>
+            <button
+              type="button"
+              className={styles.cancel_button}
+              onClick={() => {
+                dispatch(handleModalOpen(false));
+              }}
+            >
               Cancel
             </button>
           </div>
