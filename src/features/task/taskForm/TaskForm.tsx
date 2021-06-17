@@ -20,15 +20,20 @@ const TaskForm: React.FC<PropTypes> = ({ edit }) => {
     dispatch(createTask(data.taskTitle)); //taskSliceの関数を発火させるためにdispatchが必要
     reset(); //reset関数を発火することでテキストフィールドを空にできる。
   };
+  const handleEdit = (data: Inputs) => {
+    console.log(data);
+  };
+
   return (
     <div className={styles.root}>
       <form
-        onSubmit={handleSubmit(handleCreate)} //react-hook-formの特徴！
+        onSubmit={edit ? handleSubmit(handleEdit) : handleSubmit(handleCreate)} //react-hook-formの特徴！
         className={styles.form}
       >
         <TextField
           id="outlined-basic"
           label={edit ? 'Edit Task' : 'New Task'}
+          defaultValue={edit ? 'defaultValue' : ''}
           variant="outlined"
           {...register('taskTitle')} //useformとの連携（バージョン７から書式違う）
           className={styles.text_field}

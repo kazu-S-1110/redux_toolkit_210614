@@ -34,6 +34,7 @@ export const taskSlice = createSlice({
   initialState,
   // The `reducers` field lets us define reducers and generate associated actions
   reducers: {
+    //タスクの作成
     createTask: (state, action) => {
       state.idCount++;
       const newTask = {
@@ -43,15 +44,21 @@ export const taskSlice = createSlice({
       };
       state.tasks = [newTask, ...state.tasks];
     },
+    //Modalを開くか閉じるかのフラグ管理
+    handleModalOpen: (state, action) => {
+      state.isModalOpen = action.payload
+    }
+
   },
 });
 
-export const { createTask } = taskSlice.actions;
+export const { createTask, handleModalOpen } = taskSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of
 // in the slice file. For example: `useSelector((state: RootState) => state.counter.value)`
 export const selectTask = (state: RootState):TaskState["tasks"] => state.task.tasks;
+export const selectIsModalOpen = (state: RootState):TaskState["isModalOpen"] => state.task.isModalOpen;
 
 
 

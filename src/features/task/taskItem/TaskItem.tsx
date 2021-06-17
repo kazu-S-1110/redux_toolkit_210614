@@ -1,4 +1,6 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { handleModalOpen, selectIsModalOpen } from '../taskSlice';
 import Checkbox from '@material-ui/core/Checkbox';
 import EventNoteIcon from '@material-ui/icons/EventNote';
 import EditTwoToneIcon from '@material-ui/icons/EditTwoTone';
@@ -16,14 +18,14 @@ interface PropTypes {
 }
 
 const TaskItem: React.FC<PropTypes> = ({ task }) => {
-  const [open, setOpen] = React.useState(false);
-
+  const isModalOpen = useSelector(selectIsModalOpen);
+  const dispatch = useDispatch();
   const handleOpen = () => {
-    setOpen(true);
+    dispatch(handleModalOpen(true));
   };
 
   const handleClose = () => {
-    setOpen(false);
+    dispatch(handleModalOpen(false));
   };
   return (
     <div className={styles.root}>
@@ -53,7 +55,7 @@ const TaskItem: React.FC<PropTypes> = ({ task }) => {
           <DeleteOutlineTwoToneIcon className={styles.icon} />
         </button>
       </div>
-      <Modal open={open} onClose={handleClose} className={styles.modal}>
+      <Modal open={isModalOpen} onClose={handleClose} className={styles.modal}>
         <div className={styles.modal_content}>
           <div className={styles.modal_title}>Edit</div>
           <TaskForm edit />
