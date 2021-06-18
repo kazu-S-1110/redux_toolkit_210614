@@ -47,43 +47,56 @@ export const taskSlice = createSlice({
     //taskの編集
     editTask: (state, action) => {
       //state.tasksの中から指定したtaskを抜き出す
-      const task = state.tasks.find(t => t.id === action.payload.id)
+      const task = state.tasks.find((t) => t.id === action.payload.id);
       if (task) {
         // 抜き出したtaskのtitleを書き換える
-        task.title=action.payload.title
+        task.title = action.payload.title;
       }
     },
     //Modalを開くか閉じるかのフラグ管理
     handleModalOpen: (state, action) => {
-      state.isModalOpen = action.payload
+      state.isModalOpen = action.payload;
     },
 
     //どのtaskを選択しているか管理
-    selectTask: (state,action) => {
-      state.selectedTask = action.payload
+    selectTask: (state, action) => {
+      state.selectedTask = action.payload;
     },
 
     //task完了・未完了のチェックを変更
-    completeTask:(state, action) => {
-      const task = state.tasks.find(t => t.id === action.payload.id)
+    completeTask: (state, action) => {
+      const task = state.tasks.find((t) => t.id === action.payload.id);
       if (task) {
         //抜き出したtaskのcompletedを反転させる
-        task.completed = !task.completed
+        task.completed = !task.completed;
       }
-    }
+    },
+    //taskの削除
+    deleteTask: (state, action) => {
+      //指定したtask以外を新しくstate.tasksの配列に作成し直している
+      state.tasks = state.tasks.filter((t) => t.id !== action.payload.id);
+    },
   },
 });
 
-export const { createTask,selectTask ,handleModalOpen, editTask, completeTask } = taskSlice.actions;
+export const {
+  createTask,
+  selectTask,
+  handleModalOpen,
+  editTask,
+  completeTask,
+  deleteTask,
+} = taskSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of
 // in the slice file. For example: `useSelector((state: RootState) => state.counter.value)`
-export const selectTasks= (state: RootState):TaskState["tasks"] => state.task.tasks;
-export const selectIsModalOpen = (state: RootState):TaskState["isModalOpen"] => state.task.isModalOpen;
-export const selectSelectedTask = (state: RootState):TaskState["selectedTask"] => state.task.selectedTask;
-
-
-
+export const selectTasks = (state: RootState): TaskState['tasks'] =>
+  state.task.tasks;
+export const selectIsModalOpen = (state: RootState): TaskState['isModalOpen'] =>
+  state.task.isModalOpen;
+export const selectSelectedTask = (
+  state: RootState
+): TaskState['selectedTask'] => state.task.selectedTask;
 
 export default taskSlice.reducer;
