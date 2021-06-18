@@ -62,10 +62,19 @@ export const taskSlice = createSlice({
     selectTask: (state,action) => {
       state.selectedTask = action.payload
     },
+
+    //task完了・未完了のチェックを変更
+    completeTask:(state, action) => {
+      const task = state.tasks.find(t => t.id === action.payload.id)
+      if (task) {
+        //抜き出したtaskのcompletedを反転させる
+        task.completed = !task.completed
+      }
+    }
   },
 });
 
-export const { createTask,selectTask ,handleModalOpen, editTask } = taskSlice.actions;
+export const { createTask,selectTask ,handleModalOpen, editTask, completeTask } = taskSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of

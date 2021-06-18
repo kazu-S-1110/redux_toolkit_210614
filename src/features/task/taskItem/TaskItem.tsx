@@ -1,6 +1,11 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { handleModalOpen, selectIsModalOpen, selectTask } from '../taskSlice';
+import {
+  handleModalOpen,
+  selectIsModalOpen,
+  selectTask,
+  completeTask,
+} from '../taskSlice';
 import Checkbox from '@material-ui/core/Checkbox';
 import EventNoteIcon from '@material-ui/icons/EventNote';
 import EditTwoToneIcon from '@material-ui/icons/EditTwoTone';
@@ -39,9 +44,7 @@ const TaskItem: React.FC<PropTypes> = ({ task }) => {
         <Checkbox
           checked={task.completed}
           color="primary"
-          onClick={() => {
-            console.log(`check ${task.id}`);
-          }}
+          onClick={() => dispatch(completeTask(task))}
           className={styles.checkbox}
         />
         <button className={styles.edit_button} onClick={handleOpen}>
