@@ -2,7 +2,12 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from './TaskForm.module.scss';
 import { useForm } from 'react-hook-form';
-import { createTask, handleModalOpen, selectSelectedTask } from '../taskSlice';
+import {
+  createTask,
+  handleModalOpen,
+  selectSelectedTask,
+  editTask,
+} from '../taskSlice';
 import TextField from '@material-ui/core/TextField';
 
 type Inputs = {
@@ -22,7 +27,9 @@ const TaskForm: React.FC<PropTypes> = ({ edit }) => {
     reset(); //reset関数を発火することでテキストフィールドを空にできる。
   };
   const handleEdit = (data: Inputs) => {
-    console.log(data);
+    const sendData = { ...selectedTask, title: data.taskTitle };
+    dispatch(editTask(sendData));
+    dispatch(handleModalOpen(false));
   };
 
   return (
