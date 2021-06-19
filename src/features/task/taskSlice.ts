@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState, AppThunk } from '../../app/store';
 import { db } from '../../firebase';
+import { fetchCount } from '../counter/counterAPI';
 
 interface TaskState {
   idCount: number; //taskが何個あるかを管理
@@ -79,6 +80,13 @@ export const taskSlice = createSlice({
       //指定したtask以外を新しくstate.tasksの配列に作成し直している
       state.tasks = state.tasks.filter((t) => t.id !== action.payload.id);
     },
+  },
+  extraReducers: (builder) => {
+    //stateとactionの型が正しく推論されるようにbuilder関数を使用
+    builder.addCase(fetchTasks.fulfilled, (state, action) => {
+      state.tasks = action.payload.allTasks;
+      state.idCount = action.payload.taskNumber;
+    });
   },
 });
 
