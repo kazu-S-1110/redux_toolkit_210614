@@ -1,33 +1,36 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState, AppThunk } from '../../app/store';
+import { db } from '../../firebase';
 
 interface TaskState {
   idCount: number; //taskが何個あるかを管理
-  tasks: { id: number; title: string; completed: boolean }[]; // storeに保存するtaskの一覧
-  selectedTask: { id: number; title: string; completed: boolean }; //どのtaskが選択されているか
+  tasks: { id: string; title: string; completed: boolean }[]; // storeに保存するtaskの一覧,firestoreではidをstringで管理しているのでstringに変更
+  selectedTask: { id: string; title: string; completed: boolean }; //どのtaskが選択されているか
   isModalOpen: boolean;
 }
 
 const initialState: TaskState = {
   idCount: 1,
-  tasks: [{ id: 1, title: 'Task A', completed: false }],
-  selectedTask: { id: 0, title: '', completed: false },
+  tasks: [],
+  selectedTask: { id: '', title: '', completed: false },
   isModalOpen: false,
 };
 
-// The function below is called a thunk and allows us to perform async logic. It
-// can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This
-// will call the thunk with the `dispatch` function as the first argument. Async
-// code can then be executed and other actions can be dispatched. Thunks are
-// typically used to make async requests.
-// export const incrementAsync = createAsyncThunk(
-//   'counter/fetchCount',
-//   async (amount: number) => {
-//     const response = await fetchCount(amount);
-//     // The value we return becomes the `fulfilled` action payload
-//     return response.data;
-//   }
-// );
+// taskの全件取得
+export const fetchTasks = createAsyncThunk('task/getAllTasks', async () => {
+  // 日付の降順（新しいデータが上に来る）にデータをソートしてtaskのデータを全件取得
+  const res = await db.collection('tasks').orderBy('dateTime', 'desc').get();
+  //レスポンスの整形
+  const allTasks = res.docs.map((doc) => ({
+    id: doc.id,
+    title: doc.data().title,
+    completed: doc.data().completed,
+  }));
+
+  const taskNumber = allTasks.length;
+  const passData = { allTasks, taskNumber };
+  return passData;
+});
 
 export const taskSlice = createSlice({
   name: 'task',
