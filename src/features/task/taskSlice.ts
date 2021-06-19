@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState, AppThunk } from '../../app/store';
 import { db } from '../../firebase';
-import { fetchCount } from '../counter/counterAPI';
 
 interface TaskState {
   idCount: number; //taskが何個あるかを管理
@@ -40,22 +39,22 @@ export const taskSlice = createSlice({
   reducers: {
     //タスクの作成
     createTask: (state, action) => {
-      state.idCount++;
-      const newTask = {
-        id: state.idCount,
-        title: action.payload,
-        completed: false,
-      };
-      state.tasks = [newTask, ...state.tasks];
+      // state.idCount++;
+      // const newTask = {
+      //   id: state.idCount,
+      //   title: action.payload,
+      //   completed: false,
+      // };
+      // state.tasks = [newTask, ...state.tasks];
     },
     //taskの編集
     editTask: (state, action) => {
       //state.tasksの中から指定したtaskを抜き出す
-      const task = state.tasks.find((t) => t.id === action.payload.id);
-      if (task) {
-        // 抜き出したtaskのtitleを書き換える
-        task.title = action.payload.title;
-      }
+      // const task = state.tasks.find((t) => t.id === action.payload.id);
+      // if (task) {
+      //   // 抜き出したtaskのtitleを書き換える
+      //   task.title = action.payload.title;
+      // }
     },
     //Modalを開くか閉じるかのフラグ管理
     handleModalOpen: (state, action) => {
@@ -69,16 +68,16 @@ export const taskSlice = createSlice({
 
     //task完了・未完了のチェックを変更
     completeTask: (state, action) => {
-      const task = state.tasks.find((t) => t.id === action.payload.id);
-      if (task) {
-        //抜き出したtaskのcompletedを反転させる
-        task.completed = !task.completed;
-      }
+      // const task = state.tasks.find((t) => t.id === action.payload.id);
+      // if (task) {
+      //   //抜き出したtaskのcompletedを反転させる
+      //   task.completed = !task.completed;
+      // }
     },
     //taskの削除
     deleteTask: (state, action) => {
       //指定したtask以外を新しくstate.tasksの配列に作成し直している
-      state.tasks = state.tasks.filter((t) => t.id !== action.payload.id);
+      // state.tasks = state.tasks.filter((t) => t.id !== action.payload.id);
     },
   },
   extraReducers: (builder) => {

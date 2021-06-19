@@ -14,11 +14,10 @@ import DeleteOutlineTwoToneIcon from '@material-ui/icons/DeleteOutlineTwoTone';
 import styles from './TaskItem.module.scss';
 import Modal from '@material-ui/core/Modal';
 import TaskForm from '../taskForm/TaskForm';
-import { Details } from '@material-ui/icons';
 
 interface PropTypes {
   task: {
-    id: number;
+    id: string;
     title: string;
     completed: boolean;
   };
