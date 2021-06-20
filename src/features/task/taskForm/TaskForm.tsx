@@ -7,7 +7,9 @@ import {
   handleModalOpen,
   selectSelectedTask,
   editTask,
+  fetchTasks,
 } from '../taskSlice';
+import { AppDispatch } from '../../../app/store';
 import TextField from '@material-ui/core/TextField';
 
 type Inputs = {
@@ -20,11 +22,12 @@ type PropTypes = {
 
 const TaskForm: React.FC<PropTypes> = ({ edit }) => {
   const selectedTask = useSelector(selectSelectedTask);
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const { register, handleSubmit, reset } = useForm();
-  const handleCreate = (data: Inputs) => {
-    dispatch(createTask(data.taskTitle)); //taskSliceの関数を発火させるためにdispatchが必要
+  const handleCreate = async (data: Inputs) => {
+    await createTask(data.taskTitle);
     reset(); //reset関数を発火することでテキストフィールドを空にできる。
+    dispatch(fetchTasks());
   };
   const handleEdit = (data: Inputs) => {
     const sendData = { ...selectedTask, title: data.taskTitle };
