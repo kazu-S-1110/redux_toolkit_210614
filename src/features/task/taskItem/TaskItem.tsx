@@ -4,9 +4,12 @@ import {
   handleModalOpen,
   selectIsModalOpen,
   selectTask,
-  completeTask,
+  // completeTask,
   deleteTask,
+  editTask,
+  fetchTasks,
 } from '../taskSlice';
+import { AppDispatch } from '../../../app/store';
 import Checkbox from '@material-ui/core/Checkbox';
 import EventNoteIcon from '@material-ui/icons/EventNote';
 import EditTwoToneIcon from '@material-ui/icons/EditTwoTone';
@@ -25,7 +28,7 @@ interface PropTypes {
 
 const TaskItem: React.FC<PropTypes> = ({ task }) => {
   const isModalOpen = useSelector(selectIsModalOpen);
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const handleOpen = () => {
     dispatch(selectTask(task));
     dispatch(handleModalOpen(true));
@@ -34,6 +37,13 @@ const TaskItem: React.FC<PropTypes> = ({ task }) => {
   const handleClose = () => {
     dispatch(handleModalOpen(false));
   };
+
+  const handleEdit = async (id: string, title: string, completed: boolean) => {
+    const sendData = { id, title, completed: !completed };
+    await editTask(sendData);
+    dispatch(fetchTasks());
+  };
+
   return (
     <div className={styles.root}>
       <div className={styles.title}>
@@ -45,7 +55,7 @@ const TaskItem: React.FC<PropTypes> = ({ task }) => {
         <Checkbox
           checked={task.completed}
           color="primary"
-          onClick={() => dispatch(completeTask(task))}
+          onClick={() => handleEdit(task.id, task.title, task.completed)}
           className={styles.checkbox}
         />
         <button className={styles.edit_button} onClick={handleOpen}>

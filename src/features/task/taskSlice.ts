@@ -50,6 +50,26 @@ export const createTask = async (title: string): Promise<void> => {
   }
 };
 
+/* ===========================
+  taskの編集
+=========================== */
+export const editTask = async (submitData: {
+  id: string;
+  title: string;
+  completed: boolean;
+}): Promise<void> => {
+  const { id, title, completed } = submitData;
+  const dateTime = firebase.firestore.Timestamp.fromDate(new Date());
+  try {
+    await db
+      .collection('tasks')
+      .doc(id)
+      .set({ title, completed, dateTime }, { merge: true }); //mergeを付けることで既存を残して上書きされる。付けないと消えちゃう。
+  } catch (err) {
+    alert(err);
+  }
+};
+
 export const taskSlice = createSlice({
   name: 'task',
   initialState,
@@ -66,14 +86,14 @@ export const taskSlice = createSlice({
     //   // state.tasks = [newTask, ...state.tasks];
     // },
     //taskの編集
-    editTask: (state, action) => {
-      //state.tasksの中から指定したtaskを抜き出す
-      // const task = state.tasks.find((t) => t.id === action.payload.id);
-      // if (task) {
-      //   // 抜き出したtaskのtitleを書き換える
-      //   task.title = action.payload.title;
-      // }
-    },
+    // editTask: (state, action) => {
+    //   //state.tasksの中から指定したtaskを抜き出す
+    //   // const task = state.tasks.find((t) => t.id === action.payload.id);
+    //   // if (task) {
+    //   //   // 抜き出したtaskのtitleを書き換える
+    //   //   task.title = action.payload.title;
+    //   // }
+    // },
     //Modalを開くか閉じるかのフラグ管理
     handleModalOpen: (state, action) => {
       state.isModalOpen = action.payload;
@@ -85,13 +105,13 @@ export const taskSlice = createSlice({
     },
 
     //task完了・未完了のチェックを変更
-    completeTask: (state, action) => {
-      // const task = state.tasks.find((t) => t.id === action.payload.id);
-      // if (task) {
-      //   //抜き出したtaskのcompletedを反転させる
-      //   task.completed = !task.completed;
-      // }
-    },
+    // completeTask: (state, action) => {
+    //   // const task = state.tasks.find((t) => t.id === action.payload.id);
+    //   // if (task) {
+    //   //   //抜き出したtaskのcompletedを反転させる
+    //   //   task.completed = !task.completed;
+    //   // }
+    // },
     //taskの削除
     deleteTask: (state, action) => {
       //指定したtask以外を新しくstate.tasksの配列に作成し直している
@@ -111,8 +131,8 @@ export const {
   // createTask,
   selectTask,
   handleModalOpen,
-  editTask,
-  completeTask,
+  // editTask,
+  // completeTask,
   deleteTask,
 } = taskSlice.actions;
 
