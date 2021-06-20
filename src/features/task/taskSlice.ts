@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import firebase from 'firebase';
 import { RootState, AppThunk } from '../../app/store';
 import { db } from '../../firebase';
 
@@ -16,7 +17,9 @@ const initialState: TaskState = {
   isModalOpen: false,
 };
 
-// taskの全件取得
+/* ===========================
+  taskの全件取得
+=========================== */
 export const fetchTasks = createAsyncThunk('task/getAllTasks', async () => {
   // 日付の降順（新しいデータが上に来る）にデータをソートしてtaskのデータを全件取得
   const res = await db.collection('tasks').orderBy('dateTime', 'desc').get();
@@ -31,6 +34,21 @@ export const fetchTasks = createAsyncThunk('task/getAllTasks', async () => {
   const passData = { allTasks, taskNumber };
   return passData;
 });
+/* ===========================
+  taskの新規作成
+=========================== */
+export const createTask = async (title: string): Promise<void> => {
+  try {
+    // 現在時刻の取得
+    const dateTime = firebase.firestore.Timestamp.fromDate(new Date());
+    // firestoreのtaskコレクションにデータを追加
+    await db
+      .collection('tasks')
+      .add({ title: title, completed: false, dateTime: dateTime });
+  } catch (err) {
+    alert(err);
+  }
+};
 
 export const taskSlice = createSlice({
   name: 'task',
@@ -38,15 +56,15 @@ export const taskSlice = createSlice({
   // The `reducers` field lets us define reducers and generate associated actions
   reducers: {
     //タスクの作成
-    createTask: (state, action) => {
-      // state.idCount++;
-      // const newTask = {
-      //   id: state.idCount,
-      //   title: action.payload,
-      //   completed: false,
-      // };
-      // state.tasks = [newTask, ...state.tasks];
-    },
+    // createTask: (state, action) => {
+    //   // state.idCount++;
+    //   // const newTask = {
+    //   //   id: state.idCount,
+    //   //   title: action.payload,
+    //   //   completed: false,
+    //   // };
+    //   // state.tasks = [newTask, ...state.tasks];
+    // },
     //taskの編集
     editTask: (state, action) => {
       //state.tasksの中から指定したtaskを抜き出す
@@ -90,7 +108,7 @@ export const taskSlice = createSlice({
 });
 
 export const {
-  createTask,
+  // createTask,
   selectTask,
   handleModalOpen,
   editTask,
