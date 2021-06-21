@@ -13,6 +13,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import { auth } from '../../firebase';
 
 function Copyright() {
   return (
@@ -52,7 +53,7 @@ interface AuthDataTypes {
   password: string;
 }
 
-const UserAuth: React.FC = () => {
+const UserAuth: React.FC = (props: any) => {
   const classes = useStyles();
   const {
     register,
@@ -62,6 +63,16 @@ const UserAuth: React.FC = () => {
   //サインイン画面かサインアップ画面かの切り替えをuseStateで管理。
   const [isSignIn, setIsSignIn] = useState(true);
 
+  //ログイン処理
+  const handleSignIn = async (data: AuthDataTypes) => {
+    const { email, password } = data;
+    try {
+      await auth.signInWithEmailAndPassword(email, password);
+      props.history.push('/'); //BrowserRouterから渡されてるpropsのhistoryでページ遷移が可能。
+    } catch (err) {
+      alert(err);
+    }
+  };
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
