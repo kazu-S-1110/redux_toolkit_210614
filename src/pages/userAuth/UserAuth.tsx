@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -59,6 +59,8 @@ const UserAuth: React.FC = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<AuthDataTypes>();
+  //サインイン画面かサインアップ画面かの切り替えをuseStateで管理。
+  const [isSignIn, setIsSignIn] = useState(true);
 
   return (
     <Container component="main" maxWidth="xs">
@@ -68,7 +70,7 @@ const UserAuth: React.FC = () => {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign up
+          {isSignIn ? 'Sign In' : 'Sign Up'}
         </Typography>
         <form className={classes.form} noValidate>
           <Grid container spacing={2}>
@@ -134,12 +136,18 @@ const UserAuth: React.FC = () => {
             color="primary"
             className={classes.submit}
           >
-            Sign Up
+            {isSignIn ? 'Log In' : 'Sign Up'}
           </Button>
           <Grid container justify="flex-end">
             <Grid item>
-              <Link href="#" variant="body2">
-                Already have an account? Sign in
+              <Link
+                href="#"
+                variant="body2"
+                onClick={() => setIsSignIn(!isSignIn)}
+              >
+                {isSignIn
+                  ? 'You have not an account? Go to Sign up'
+                  : 'Already have an account? Go to Log in'}
               </Link>
             </Grid>
           </Grid>
