@@ -1,4 +1,5 @@
 import React from 'react';
+import { useForm } from 'react-hook-form';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -46,8 +47,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+interface AuthDataTypes {
+  email: string;
+  password: string;
+}
+
 const UserAuth: React.FC = () => {
   const classes = useStyles();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<AuthDataTypes>();
 
   return (
     <Container component="main" maxWidth="xs">
@@ -61,29 +72,6 @@ const UserAuth: React.FC = () => {
         </Typography>
         <form className={classes.form} noValidate>
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                autoComplete="fname"
-                name="firstName"
-                variant="outlined"
-                required
-                fullWidth
-                id="firstName"
-                label="First Name"
-                autoFocus
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="lastName"
-                label="Last Name"
-                name="lastName"
-                autoComplete="lname"
-              />
-            </Grid>
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
@@ -91,8 +79,26 @@ const UserAuth: React.FC = () => {
                 fullWidth
                 id="email"
                 label="Email Address"
-                name="email"
                 autoComplete="email"
+                autoFocus
+                error={Boolean(errors.email)}
+                helperText={errors.email && errors.email.message}
+                // inputRef={register({
+                //   required: {
+                //     value: true,
+                //     message: 'input email',
+                //   },
+                //   pattern: {
+                //     value:
+                //       /^[A-Za-z0-9]{1}[A-Za-z0-9_.-]*@{1}[A-Za-z0-9_.-]{1,}\.[A-Za-z0-9]{1,}$/,
+                //     message: 'fix correct email address',
+                //   },
+                // })}
+                {...register('email', {
+                  required: true,
+                  pattern:
+                    /^[A-Za-z0-9]{1}[A-Za-z0-9_.-]*@{1}[A-Za-z0-9_.-]{1,}\.[A-Za-z0-9]{1,}$/,
+                })}
               />
             </Grid>
             <Grid item xs={12}>
@@ -100,17 +106,24 @@ const UserAuth: React.FC = () => {
                 variant="outlined"
                 required
                 fullWidth
-                name="password"
                 label="Password"
                 type="password"
                 id="password"
                 autoComplete="current-password"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <FormControlLabel
-                control={<Checkbox value="allowExtraEmails" color="primary" />}
-                label="I want to receive inspiration, marketing promotions and updates via email."
+                error={Boolean(errors.password)}
+                helperText={errors.password && errors.password.message}
+                // inputRef={register({
+                //   required: {
+                //     value: true,
+                //     message: 'input password',
+                //   },
+                //   minLength: {
+                //     value:
+                //       6
+                //     message: 'input more than 6 words',
+                //   },
+                // })}
+                {...register('password', { required: true, minLength: 6 })}
               />
             </Grid>
           </Grid>
