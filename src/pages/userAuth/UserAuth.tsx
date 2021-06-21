@@ -5,6 +5,7 @@ import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import { RouteComponentProps } from 'react-router-dom';
 import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
@@ -53,7 +54,8 @@ interface AuthDataTypes {
   password: string;
 }
 
-const UserAuth: React.FC = (props: any) => {
+const UserAuth: React.FC<RouteComponentProps> = (props) => {
+  //BrowserRouterから渡される型注釈は専用で用意されている
   const classes = useStyles();
   const {
     register,
@@ -73,6 +75,18 @@ const UserAuth: React.FC = (props: any) => {
       alert(err);
     }
   };
+
+  //新規登録処理
+  const handleSignUp = async (data: AuthDataTypes) => {
+    const { email, password } = data;
+    try {
+      await auth.createUserWithEmailAndPassword(email, password);
+      props.history.push('/');
+    } catch (err) {
+      alert(err);
+    }
+  };
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -83,7 +97,13 @@ const UserAuth: React.FC = (props: any) => {
         <Typography component="h1" variant="h5">
           {isSignIn ? 'Sign In' : 'Sign Up'}
         </Typography>
-        <form className={classes.form} noValidate>
+        <form
+          onSubmit={
+            isSignIn ? handleSubmit(handleSignIn) : handleSubmit(handleSignUp)
+          }
+          className={classes.form}
+          noValidate
+        >
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
