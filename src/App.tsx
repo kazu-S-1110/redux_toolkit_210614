@@ -6,10 +6,10 @@ import styles from './App.module.scss';
 import Header from './components/header';
 import TaskForm from './features/task/taskForm/TaskForm';
 import TaskList from './features/task/taskList/TaskList';
-
 import { auth } from './firebase';
+import { RouteComponentProps } from 'react-router-dom';
 
-const App: React.FC = () => {
+const App: React.FC<RouteComponentProps> = (props) => {
   console.log(auth);
   const dispatch: AppDispatch = useDispatch();
   useEffect(() => {
@@ -21,7 +21,7 @@ const App: React.FC = () => {
   return (
     <div className={styles.root}>
       <div className={styles.wrapper}>
-        <Header />
+        <Header history={props.history} />
         <TaskForm />
         <TaskList />
       </div>

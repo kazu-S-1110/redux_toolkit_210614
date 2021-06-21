@@ -4,8 +4,22 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import styles from './header.module.scss';
+import { auth } from '../firebase';
+import * as H from 'history';
 
-const Header: React.FC = () => {
+interface PropTypes {
+  history: H.History;
+}
+
+const Header: React.FC<PropTypes> = ({ history }) => {
+  const handleSignout = async () => {
+    try {
+      await auth.signOut();
+      history.push('/user-auth');
+    } catch (err) {
+      alert(err);
+    }
+  };
   return (
     <div className={styles.root}>
       <AppBar position="static" className={styles.app_bar}>
