@@ -5,9 +5,10 @@ import {
   selectIsModalOpen,
   selectTask,
   // completeTask,
-  deleteTask,
+  // deleteTask,
   editTask,
   fetchTasks,
+  deleteTask,
 } from '../taskSlice';
 import { AppDispatch } from '../../../app/store';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -44,6 +45,11 @@ const TaskItem: React.FC<PropTypes> = ({ task }) => {
     dispatch(fetchTasks());
   };
 
+  const handleDelete = async (id: string) => {
+    await deleteTask(id);
+    dispatch(fetchTasks());
+  };
+
   return (
     <div className={styles.root}>
       <div className={styles.title}>
@@ -63,7 +69,7 @@ const TaskItem: React.FC<PropTypes> = ({ task }) => {
         </button>
         <button
           className={styles.delete_button}
-          onClick={() => dispatch(deleteTask(task))}
+          onClick={() => handleDelete(task.id)}
         >
           <DeleteOutlineTwoToneIcon className={styles.icon} />
         </button>

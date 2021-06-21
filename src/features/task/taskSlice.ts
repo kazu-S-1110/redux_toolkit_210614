@@ -70,6 +70,17 @@ export const editTask = async (submitData: {
   }
 };
 
+/* ===========================
+  taskの削除
+=========================== */
+export const deleteTask = async (id: string): Promise<void> => {
+  try {
+    await db.collection('tasks').doc(id).delete();
+  } catch (err) {
+    alert(err);
+  }
+};
+
 export const taskSlice = createSlice({
   name: 'task',
   initialState,
@@ -113,10 +124,10 @@ export const taskSlice = createSlice({
     //   // }
     // },
     //taskの削除
-    deleteTask: (state, action) => {
-      //指定したtask以外を新しくstate.tasksの配列に作成し直している
-      // state.tasks = state.tasks.filter((t) => t.id !== action.payload.id);
-    },
+    // deleteTask: (state, action) => {
+    //   //指定したtask以外を新しくstate.tasksの配列に作成し直している
+    //   // state.tasks = state.tasks.filter((t) => t.id !== action.payload.id);
+    // },
   },
   extraReducers: (builder) => {
     //stateとactionの型が正しく推論されるようにbuilder関数を使用
@@ -133,7 +144,7 @@ export const {
   handleModalOpen,
   // editTask,
   // completeTask,
-  deleteTask,
+  // deleteTask,
 } = taskSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
