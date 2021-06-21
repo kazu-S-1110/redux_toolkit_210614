@@ -1,6 +1,6 @@
 import React from 'react';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
+import Button from '@material-ui/core/Button';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import styles from './header.module.scss';
@@ -12,7 +12,7 @@ interface PropTypes {
 }
 
 const Header: React.FC<PropTypes> = ({ history }) => {
-  const handleSignout = async () => {
+  const handleSignOut = async () => {
     try {
       await auth.signOut();
       history.push('/user-auth');
@@ -27,6 +27,7 @@ const Header: React.FC<PropTypes> = ({ history }) => {
           <Typography variant="h6" className={styles.title}>
             Redux Toolkit Todo
           </Typography>
+          <Button onClick={handleSignOut}>LogOut</Button>
         </Toolbar>
       </AppBar>
     </div>

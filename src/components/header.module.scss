@@ -5,6 +5,8 @@
     color: #282828;
     .tool_bar {
       padding: 0;
+      display: flex;
+      justify-content: space-between;
     }
   }
 }
