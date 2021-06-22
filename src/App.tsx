@@ -12,6 +12,7 @@ import { RouteComponentProps } from 'react-router-dom';
 const App: React.FC<RouteComponentProps> = (props) => {
   const dispatch: AppDispatch = useDispatch();
 
+  //ログインしてなければ認証画面に飛ぶ
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
       !user && props.history.push('user-auth');
