@@ -10,8 +10,14 @@ import { auth } from './firebase';
 import { RouteComponentProps } from 'react-router-dom';
 
 const App: React.FC<RouteComponentProps> = (props) => {
-  console.log(auth);
   const dispatch: AppDispatch = useDispatch();
+
+  useEffect(() => {
+    auth.onAuthStateChanged((user) => {
+      !user && props.history.push('user-auth');
+    });
+  }, []);
+
   useEffect(() => {
     const getData = () => {
       dispatch(fetchTasks());
